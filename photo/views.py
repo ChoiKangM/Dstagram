@@ -8,17 +8,22 @@ from .models import Photo
 
 
 @login_required
-class PhotoDeleteView(DeleteView):
+def photo_list(request):
+    photos = Photo.objects.all()
+    return render(request, 'photo/list.html', {'photos':photos})
+
+
+class PhotoDeleteView(LoginRequiredMixin, DeleteView):
     model = Photo
     success_url = '/'
     template_name = 'photo/delete.html'
 
-class PhotoUpdateView(UpdateView):
+class PhotoUpdateView(LoginRequiredMixin, UpdateView):
     model = Photo
     fields = ['photo', 'text']
     template_name = 'photo/update.html'
 
-class PhotoUploadView(CreateView):
+class PhotoUploadView(LoginRequiredMixin, CreateView):
     model = Photo
     fields = ['photo', 'text']
     template_name = 'photo/upload.html'
@@ -31,6 +36,3 @@ class PhotoUploadView(CreateView):
         else:
             return self.render_to_response({'form':form})
 
-def photo_list(request):
-    photos = Photo.objects.all()
-    return render(request, 'photo/list.html', {'photos':photos})
