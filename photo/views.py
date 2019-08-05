@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Photo
 # Create your views here.
 
+
+@login_required
 class PhotoDeleteView(DeleteView):
     model = Photo
     success_url = '/'
